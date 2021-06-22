@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Lab</title>
+    <meta name="author" content="LuckyCycle">
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <meta name="robots" content="noindex, nofollow">
+
+    <style>
+      @charset "UTF-8";
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+      /*Common*/
+      * {
+        outline: none;
+        outline-color: transparent;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        -webkit-touch-callout: none;
+        -webkit-user-drag: none;
+        user-drag: none;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        font-weight: 400;
+        font-family: 'Montserrat', sans-serif;
+      }
+      *:not(input):not(select) {
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+      }
+      html {
+        width: 100%; height: 100%;
+        margin: 0; padding: 0;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      html::-webkit-scrollbar {
+        width: 0; height: 0;
+        display: none;
+      }
+      body {
+        width: 100%; height: 100%;
+        margin: 0; padding: 0;
+        background-image: url(https://source.unsplash.com/daily?nature);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #AAA;
+        /*background-blend-mode: multiply;*/
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal {
+        color: white;
+        background-color:rgba(68, 87, 93, .5);
+        backdrop-filter: blur(.25em);
+        width: 35em; max-width: 95%;
+        padding: 2.5em 1.5em;
+        box-shadow: 0 0 .75em rgba(0, 0, 0, .25);
+        text-align: center;
+      }
+      .modal > * {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        appearance: none;
+        -webkit-transition: all .3s ease;
+        -moz-transition: all .3s ease;
+        transition: all .3s ease;
+        text-align: center;
+        display: block;
+        width: 100%; max-width: 25em;
+        padding: 1em; margin: 1em auto;
+        color: white;
+      }
+      .modal input {
+        height: 3em; line-height: 1em;
+        background-color: rgba(23, 37, 42, .375);
+        border: .125em solid transparent;
+      }
+      .modal input::-webkit-input-placeholder {
+        color: rgba(255, 255, 255, .875);
+      }
+      .modal input:-moz-placeholder {
+        color: rgba(255, 255, 255, .875);
+      }
+      .modal input::-moz-placeholder {
+        color: rgba(255, 255, 255, .875);
+      }
+      .modal input:-ms-input-placeholder {
+        color: rgba(255, 255, 255, .875);
+      }
+      .form input::placeholder {
+        color: rgba(255, 255, 255, .875);
+      }
+      .modal input:hover {
+        border-color: rgba(255, 255, 255, .875);
+      }
+      .modal input:focus, .modal input:active {
+        border-color: rgba(23, 37, 42, 1);
+      }
+      .modal button {
+        border: none;
+        cursor: pointer;
+        height: 3em; line-height: 1em;
+        background-color: #752DCB;
+      }
+      .modal button:hover, .modal button:active {
+        background-color: #AD1BA1;
+      }
+      .wiggle {
+        animation: .75s ease-in wiggle;
+      }
+      @keyframes wiggle {
+        0%  { transform: skewX(9deg); }
+        10% { transform: skewX(-8deg); }
+        20% { transform: skewX(7deg); }
+        30% { transform: skewX(-6deg); }
+        40% { transform: skewX(5deg); }
+        50% { transform: skewX(-4deg); }
+        60% { transform: skewX(3deg); }
+        70% { transform: skewX(-2deg); }
+        80% { transform: skewX(1deg); }
+        90%, 100% { transform: skewX(0deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="modal">
+      <input type="password" placeholder="Key" autofocus>
+      <button>Access</button>
+    </div>
+
+    <!-- Adapted from https://github.com/scottishstoater/protected-github-pages -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-sha1/0.6.0/sha1.min.js"></script>
+    <script type="text/javascript">
+      "use strict"
+      const box = document.querySelectorAll('.modal');
+      const key = document.querySelectorAll('.modal input');
+      const button = document.querySelectorAll('.modal button');
+
+      function access(door) {
+          var url = sha1(door);
+          console.log(url);
+
+          box[0].classList.remove('wiggle');
+
+          var request = new XMLHttpRequest();
+          request.open('GET', url + '/index.html', true);
+          request.onload = function () {
+              if (request.status >= 200 && request.status < 400) {
+                  window.location = url;
+              } else {
+                  box[0].classList.add('wiggle');
+                  password[0].value = '';
+              }
+          }
+          request.onerror = function () {
+              box[0].classList.add('wiggle');
+              key[0].value = '';
+          }
+          request.send();
+      }
+
+      button[0].addEventListener('click', function () {
+          access(key[0].value);
+      })
+
+      document.onkeydown = function (e) {
+          e = e || window.event;
+          if (e.keyCode == 13) {
+              access(key[0].value);
+          }
+      }
+    </script>
+  </body>
+</html>
