@@ -47,39 +47,61 @@
       }
       body {
         width: 100%; height: 100%;
-        margin: 0; padding: 0;
+        margin: 0; padding: 1em;
         background-color: #F8F9FA;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
       }
-      svg {
+      a svg {
         width: 10em; height: 10em;
         fill: #202931;
 
         transition: all .3s ease;
       }
-      svg:hover, svg:focus, svg:active {
+      a svg:hover, a svg:focus, a svg:active {
         fill: #19916B;
       }
       p {
         color: #171C20;
         margin: -.25em auto .25em;
       }
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
       button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        appearance: none;
+        border: none;
+        cursor: pointer;
+        transition: all .3s ease;
         color: white;
+        background-color: #8CA1B4;
+        padding: .5em 1em;
+        margin: 1.25em auto 0;
+        border-radius: .25em;
+      }
+      button:hover {
         background-color: #171C20;
+      }
+      button span.icon {
+        vertical-align: middle;
+      }
+      button svg {
+        width: 1em; height: 1em;
+        fill: white;
+      }
+      button.success {
+        background-color: #19916B;
+      }
+      button.error {
+        background-color: #C82349;
       }
     </style>
   </head>
   <body>
     <a href="./rip.zip" download="lab-rip.zip">
-      <svg version="1.1" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>Download ZIP</title>
         <g>
           <polygon points="288,144 288,160 400,160 400,432 112,432 112,160 224,160 224,144 96,144 96,448 416,448 416,144"/>
@@ -87,6 +109,39 @@
         </g>
       </svg>
     </a>
-    <p><a href="./rip.py" download="lab-rip.py" target="_blank">rip.py</a></p>
+    <p>rip.py</p>
+    <button>
+      <span class="icon">
+        <svg version="1.1" viewBox="0 0 96 96" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <title>Copy to clipboard</title>
+          <path d="M72,12h-4.697C65.653,7.342,61.223,4,56,4H40c-5.223,0-9.653,3.342-11.303,8H24c-6.63,0-12,5.37-12,12v56  c0,6.63,5.37,12,12,12h48c6.63,0,12-5.37,12-12V24C84,17.37,78.63,12,72,12z M40,12h16c2.209,0,4,1.791,4,4s-1.791,4-4,4H40  c-2.209,0-4-1.791-4-4S37.791,12,40,12z M76,80c0,2.21-1.79,4-4,4H24c-2.21,0-4-1.79-4-4V24c0-2.21,1.79-4,4-4h4.697  c1.649,4.658,6.08,8,11.303,8h16c5.223,0,9.653-3.342,11.303-8H72c2.21,0,4,1.79,4,4V80z"/>
+        </svg>
+      </span>
+      <span>Run from terminal using wget</span>
+    </button>
+
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+        var filename = document.querySelector('p').innerText;
+        var button = document.querySelector('button');
+        button.addEventListener('click', function() { clip(filename); });
+
+        function clip(file){
+          var bash = 'python3 <(wget ' + window.location.href + '/' + file + ' -q -O-)';
+          if (navigator.clipboard) {
+            button.classList.remove('success', 'error');
+            try {
+              navigator.clipboard.writeText(bash);
+              button.classList.add('success');
+            } catch(e) {
+              console.error('Couldn\'t copy:', e);
+              button.classList.add('error');
+            }
+          } else {
+            button.style.display = 'none';
+          }
+        }
+      })
+    </script>
   </body>
 </html>

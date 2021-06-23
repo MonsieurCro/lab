@@ -49,8 +49,12 @@ def fetch(urls, directory, logs):
   init()
 
 def init():
-  file = input('\033[95m {}\033[00m'.format('Please enter path or \'help/exit\': ')).replace(' ', '')
-  if file == 'exit': exit('--- Goodbye! ---')
+  file = input('\033[95m {}\033[00m'.format('Please enter path or \'help/folder/exit\': ')).replace(' ', '')
+  if file == 'exit':
+    exit('--- Goodbye! ---')
+  elif file == 'folder':
+    print('Folder:', os.getcwd())
+    init()
   elif file == 'help' or file == '':
     print('--- This script accept the absolute (C:\ /Users/) or relative (./) path of a JSON file. ---')
     init()
