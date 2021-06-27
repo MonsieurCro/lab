@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Experiments \ Pioum</title>
+    <meta name="author" content="MonsieurCro">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <meta name="robots" content="noindex, nofollow">
+
+    <style>
+      * {
+        outline: none;
+        outline-color: transparent;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        -webkit-touch-callout: none;
+        -webkit-user-drag: none;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+      }
+      html {
+        width: 100%; height: 100%;
+        margin: 0; padding: 0;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      html::-webkit-scrollbar {
+        width: 0; height: 0;
+        display: none;
+      }
+      body {
+        width: 100%; height: 100%;
+        margin: 0; padding: 1em;
+        background-color: #F381B1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        animation: colour 12s ease-in-out infinite;
+      }
+      #pioum {
+        position: relative;
+        width: 1px; height: 1px;
+        border-radius: 50%;
+      }
+      #pioum img {
+        position: absolute;
+        top: 50%; left: 50%; bottom: auto; right: auto;
+        transform: translate(-50%, -50%);
+        width: 20em; height: 20em;
+        max-width: 75vw; max-height: 75vw;
+      }
+      .shrink {
+        animation: shrink 3s ease-in-out infinite;
+      }
+      @keyframes shrink {
+        50% { width: 10em; height: 10em; }
+      }
+      .colour {
+        animation: colour 12s ease-in-out infinite;
+      }
+      @keyframes colour {
+        0%, 15%  { background-color: rgb(243, 129, 177); }
+        25%, 40% { background-color: rgb(242, 241, 156); }
+        50%, 65% { background-color: rgb(173, 218, 181); }
+        75%, 90% { background-color: rgb(103, 204, 222); }
+      }
+      .pulse {
+        animation: pulse 12s ease-in infinite;
+      }
+      @keyframes pulse {
+        15% { box-shadow: 0 0 0 0 rgba(242, 241, 156, .8); }
+        20% { box-shadow: 0 0 0 25em rgba(242, 241, 156, 0); }
+        25% { box-shadow: 0 0 0 0 rgba(242, 241, 156, 0); }
+        40% { box-shadow: 0 0 0 0 rgba(103, 204, 222, .8); }
+        45% { box-shadow: 0 0 0 25em rgba(103, 204, 222, 0); }
+        50% { box-shadow: 0 0 0 0 rgba(103, 204, 222, 0); }
+        65% { box-shadow: 0 0 0 0 rgba(103, 204, 222, .8); }
+        70% { box-shadow: 0 0 0 25em rgba(103, 204, 222, 0); }
+        75% { box-shadow: 0 0 0 0 rgba(103, 204, 222, 0); }
+        90% { box-shadow: 0 0 0 0 rgba(243, 129, 177, .8); }
+        95% { box-shadow: 0 0 0 25em rgba(243, 129, 177, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(243, 129, 177, 0); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pioum" class="pulse">
+      <img class="shrink" src="./pioum.png" alt="PIOUM" title="">
+    </div>
+  </body>
+</html>
