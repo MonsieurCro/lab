@@ -44,7 +44,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        animation: colour 12s ease-in-out infinite;
+        animation: colour 15s ease-in-out infinite;
       }
       #pioum {
         position: relative;
@@ -55,37 +55,44 @@
         position: absolute;
         top: 50%; left: 50%; bottom: auto; right: auto;
         transform: translate(-50%, -50%);
-        width: 20em; height: 20em;
-        max-width: 75vw; max-height: 75vw;
+        width: 75vw; height: 75vw;
+        max-width: 20em; max-height: 20em;
       }
       .shrink {
         animation: shrink 3s ease-in-out infinite;
       }
       @keyframes shrink {
-        50% { width: 10em; height: 10em; }
+        50% {
+          width: 37.5vw; height: 37.5vw;
+          max-width: 10em; max-height: 10em;
+        }
       }
       .colour {
-        animation: colour 12s ease-in-out infinite;
+        animation: colour 15s ease-in-out infinite;
       }
       @keyframes colour {
-        0%, 15%  { background-color: rgb(243, 129, 177); }
-        25%, 40% { background-color: rgb(242, 241, 156); }
-        50%, 65% { background-color: rgb(173, 218, 181); }
-        75%, 90% { background-color: rgb(103, 204, 222); }
+        0%, 10% { background-color: rgb(243, 129, 177); }
+        20%, 30% { background-color: rgb(250, 198, 147); }
+        40%, 50% { background-color: rgb(242, 241, 156); }
+        60%, 70% { background-color: rgb(173, 218, 181); }
+        80%, 90% { background-color: rgb(103, 204, 222); }
       }
       .pulse {
-        animation: pulse 12s ease-in infinite;
+        animation: pulse 15s ease-in infinite;
       }
       @keyframes pulse {
-        15% { box-shadow: 0 0 0 0 rgba(242, 241, 156, .8); }
-        20% { box-shadow: 0 0 0 25em rgba(242, 241, 156, 0); }
-        25% { box-shadow: 0 0 0 0 rgba(242, 241, 156, 0); }
-        40% { box-shadow: 0 0 0 0 rgba(103, 204, 222, .8); }
-        45% { box-shadow: 0 0 0 25em rgba(103, 204, 222, 0); }
-        50% { box-shadow: 0 0 0 0 rgba(103, 204, 222, 0); }
-        65% { box-shadow: 0 0 0 0 rgba(103, 204, 222, .8); }
-        70% { box-shadow: 0 0 0 25em rgba(103, 204, 222, 0); }
-        75% { box-shadow: 0 0 0 0 rgba(103, 204, 222, 0); }
+        10% { box-shadow: 0 0 0 0 rgba(250, 198, 147, .8); }
+        15% { box-shadow: 0 0 0 25em rgba(250, 198, 147, 0); }
+        20% { box-shadow: 0 0 0 0 rgba(250, 198, 147, 0); }
+        30% { box-shadow: 0 0 0 0 rgba(242, 241, 156, .8); }
+        35% { box-shadow: 0 0 0 25em rgba(242, 241, 156, 0); }
+        40% { box-shadow: 0 0 0 0 rgba(242, 241, 156, 0); }
+        50% { box-shadow: 0 0 0 0 rgba(173, 218, 181, .8); }
+        55% { box-shadow: 0 0 0 25em rgba(173, 218, 181, 0); }
+        60% { box-shadow: 0 0 0 0 rgba(173, 218, 181, 0); }
+        70% { box-shadow: 0 0 0 0 rgba(103, 204, 222, .8); }
+        75% { box-shadow: 0 0 0 25em rgba(103, 204, 222, 0); }
+        80% { box-shadow: 0 0 0 0 rgba(103, 204, 222, 0); }
         90% { box-shadow: 0 0 0 0 rgba(243, 129, 177, .8); }
         95% { box-shadow: 0 0 0 25em rgba(243, 129, 177, 0); }
         100% { box-shadow: 0 0 0 0 rgba(243, 129, 177, 0); }
