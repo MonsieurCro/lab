@@ -44,8 +44,10 @@ def fetch(urls, directory, logs):
         shutil.copyfileobj(r.raw, temp)
         #print(index, shortname, 'successfully downloaded.')
         count += 1
+
       else:
-        print(index, filename, 'couldn\'t be retrieved (Error ' + r.status_code + ').')
+        print(index, shortname, 'couldn\'t be retrieved (Error ' + str(r.status_code) + ').')
+
     except Exception as e:
       print(index, 'Exception:', e)
 
