@@ -56,7 +56,6 @@
         list-style-type: none;
         width: 100%; max-width: 500px; height: auto;
         margin: auto; padding: 0;
-        border: .075em solid #202931;
       }
       ul a {
         text-decoration: none;
@@ -68,9 +67,11 @@
       ul li {
         width: 100%; height: auto;
         margin: auto; padding: .25em .75em;
-        border: .075em solid #202931;
-        border-collapse: collapse;
+        border: .125em solid #202931;
         transition: all .3s ease;
+      }
+      ul a:not(:last-of-type) li {
+        border-bottom: none;
       }
       ul a:hover li {
         background-color: #5948DF;
@@ -79,13 +80,9 @@
   </head>
   <body>
     <ul>
-      <!-- <a href="./fet-rip.js" download="lab-fetrip.zip"><li>fet-rip.js</li></a> -->
-      <a href="./fet-filt.js" download="lab-fetfilt.zip"><li>fet-filt.js</li></a>
-      <a href="./mym-rip.js" download="lab-mymrip.zip"><li>mym-rip.js</li></a>
+      <!-- <a href="./fet-rip.js" download="lab-fetrip.js"><li>fet-rip.js</li></a> -->
+      <a href="./fet-filt.js" download="lab-fetfilt.js"><li>fet-filt.js</li></a>
+      <a href="./mym-rip.js" download="lab-mymrip.js"><li>mym-rip.js</li></a>
     </ul>
-
-    <script type="text/javascript">
-      document.addEventListener('DOMContentLoaded', function() {});
-    </script>
   </body>
 </html>
