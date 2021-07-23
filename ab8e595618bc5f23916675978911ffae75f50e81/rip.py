@@ -8,10 +8,13 @@ import shutil
 
 def fetch(urls, directory, logs):
   os.makedirs('./' + directory, exist_ok = True)
-  headers = {
+  count = 0
+
+  s = requests.Session()
+  params = {
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'
   }
-  count = 0
+  #s.post()
 
   for idx, url in enumerate(urls):
     index = '[' + str(idx + 1) + ']'
@@ -19,14 +22,14 @@ def fetch(urls, directory, logs):
     shortname = filename if len(filename) <= 12 else filename[:11] + '…'
 
     try:
-      r = requests.get(url, headers = headers, stream = True, allow_redirects = True)
+      r = s.get(url, headers = params, stream = True, allow_redirects = True)
 
       if int(r.status_code) == 200:
         r.raw.decode_content = True
 
         if logs == True:
           size = int(r.headers.get('content-length', 0))
-          with open('./' + directory + '/' + filename[:245], 'wb') as temp, tqdm (
+          with open('./' + directory + '/' + str(len(urls) - idx) + '_' + filename[:245], 'wb') as temp, tqdm (
             desc = index + ' ' + shortname,
             total = size,
             unit = 'iB',
@@ -39,7 +42,7 @@ def fetch(urls, directory, logs):
               size = temp.write(data)
               bar.update(size)
         else:
-          temp = open('./' + directory + '/' + filename[:245], 'wb')
+          temp = open('./' + directory + '/' + str(len(urls) - idx) + '_' + filename[:245], 'wb')
 
         shutil.copyfileobj(r.raw, temp)
         #print(index, shortname, 'successfully downloaded.')
@@ -48,10 +51,15 @@ def fetch(urls, directory, logs):
       else:
         print(index, shortname, 'couldn\'t be retrieved (Error ' + str(r.status_code) + ').')
 
+    except KeyboardInterrupt:
+      print('--- Script stopped. ---')
+      init()
     except Exception as e:
       print(index, 'Exception:', e)
+      exit(0)
 
   print('--- Fetching complete. Retrieved', count, 'elements.\n')
+  s.close()
   init()
 
 def init():
@@ -70,7 +78,7 @@ def init():
       folder = os.path.splitext(os.path.basename(file))[0]
       #print(json.dumps(list, indent = 2, sort_keys = True))
 
-      print('\n--- Fetching', folder, '(' + str(len(list)) + ' entries)')
+      print('\n--- Fetching ' + str(len(list)) + ' entries from ' + folder + '.')
       fetch(list, folder, True)
     except Exception as e:
       print(e)
