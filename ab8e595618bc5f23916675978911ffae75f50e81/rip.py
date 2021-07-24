@@ -17,9 +17,6 @@ def fetch(urls, directory, logs):
   #s.post()
 
   for idx, url in enumerate(urls):
-    index = '[' + str(idx + 1) + ']'
-    filename = str(url.split('/')[-1].split('?')[0])
-    shortname = filename if len(filename) <= 12 else filename[:11] + '…'
 
     try:
       r = s.get(url, headers = params, stream = True, allow_redirects = True)
@@ -27,9 +24,17 @@ def fetch(urls, directory, logs):
       if int(r.status_code) == 200:
         r.raw.decode_content = True
 
+        index = '[' + str(idx + 1) + ']'
+        filename = str(url.split('/')[-1].split('?')[0])
+        shortname = filename if len(filename) <= 12 else filename[:11] + '…'
+
+        root, ext = os.path.splitext(filename)
+        type = '.' + r.headers.get('content-type', '').split('/')[-1] if not ext and r.headers.get('content-type', '') else ''
+        path = './' + directory + '/' + str(len(urls) - idx) + '_' + filename[:245] + type
+
         if logs == True:
           size = int(r.headers.get('content-length', 0))
-          with open('./' + directory + '/' + str(len(urls) - idx) + '_' + filename[:245], 'wb') as temp, tqdm (
+          with open(path, 'wb') as temp, tqdm (
             desc = index + ' ' + shortname,
             total = size,
             unit = 'iB',
@@ -42,7 +47,7 @@ def fetch(urls, directory, logs):
               size = temp.write(data)
               bar.update(size)
         else:
-          temp = open('./' + directory + '/' + str(len(urls) - idx) + '_' + filename[:245], 'wb')
+          temp = open(path, 'wb')
 
         shutil.copyfileobj(r.raw, temp)
         #print(index, shortname, 'successfully downloaded.')
