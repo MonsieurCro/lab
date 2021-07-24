@@ -11,20 +11,18 @@ def fetch(urls, directory, logs):
   count = 0
 
   s = requests.Session()
-  params = {
-    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'
-  }
-  #s.post()
+  headers = { 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36' }
+  #s.post(url, headers = headers, data = {}, stream = True, allow_redirects = True)
 
   for idx, url in enumerate(urls):
+    index = '[' + str(idx + 1) + ']'
 
     try:
-      r = s.get(url, headers = params, stream = True, allow_redirects = True)
+      r = s.get(url, headers = headers, stream = True, allow_redirects = True)
 
       if int(r.status_code) == 200:
         r.raw.decode_content = True
 
-        index = '[' + str(idx + 1) + ']'
         filename = str(url.split('/')[-1].split('?')[0])
         shortname = filename if len(filename) <= 12 else filename[:11] + '…'
 
@@ -61,7 +59,7 @@ def fetch(urls, directory, logs):
       init()
     except Exception as e:
       print(index, 'Exception:', e)
-      exit(0)
+      init()
 
   print('--- Fetching complete. Retrieved', count, 'elements.\n')
   s.close()
@@ -87,7 +85,7 @@ def init():
       fetch(list, folder, True)
     except Exception as e:
       print(e)
-      init()
+      exit(0)
 
 os.system('cls' if os.name == 'nt' else 'clear')
 init()
