@@ -1,34 +1,44 @@
-#!/usr/bin/env python3
+# coding: utf-8
+# #!/usr/bin/env python3
 
-import json
-import os
-import requests
-from tqdm import tqdm
-import shutil
+try:
+  import json
+  import os
+  import requests
+  from tqdm import tqdm
+  import shutil
+except ImportError as e:
+  print(e)
+  print('\033[91m {}\033[00m'.format('Run \'pip3 install --upgrade --user -r ./req/modules.txt\' and try again.\n'))
+  exit(0)
 
 def fetch(urls, directory, logs):
-  os.makedirs('./' + directory, exist_ok = True)
+  os.makedirs('./rips/' + directory, exist_ok = True)
   count = 0
 
   s = requests.Session()
-  headers = { 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36' }
-  #s.post(url, headers = headers, data = {}, stream = True, allow_redirects = True)
+  request = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
+    'accept': 'application/json, text/plain, */*',
+    'Referer': '',
+    'Cookie' : ''
+  }
+  #s.post(url, data = {}, headers = request, stream = True, allow_redirects = True)
 
   for idx, url in enumerate(urls):
     index = '[' + str(idx + 1) + ']'
+    filename = str(url.split('/')[-1].split('?')[0])
+    shortname = filename if len(filename) <= 12 else filename[:11] + '…'
 
     try:
-      r = s.get(url, headers = headers, stream = True, allow_redirects = True)
+      r = s.get(url, headers = request, stream = True, allow_redirects = True)
 
       if int(r.status_code) == 200:
         r.raw.decode_content = True
 
-        filename = str(url.split('/')[-1].split('?')[0])
-        shortname = filename if len(filename) <= 12 else filename[:11] + '…'
-
         root, ext = os.path.splitext(filename)
         type = '.' + r.headers.get('content-type', '').split('/')[-1] if not ext and r.headers.get('content-type', '') else ''
-        path = './' + directory + '/' + str(len(urls) - idx) + '_' + filename[:245] + type
+        path = './rips/' + directory + '/' + str(len(urls) - idx) + '_' + filename[:245] + type
 
         if logs == True:
           size = int(r.headers.get('content-length', 0))
@@ -52,14 +62,14 @@ def fetch(urls, directory, logs):
         count += 1
 
       else:
-        print(index, shortname, 'couldn\'t be retrieved (Error ' + str(r.status_code) + ').')
+        print('\033[91m {}\033[00m'.format(index), shortname, 'couldn\'t be retrieved (Error ' + str(r.status_code) + ').')
 
     except KeyboardInterrupt:
       print('--- Script stopped. ---')
       init()
     except Exception as e:
-      print(index, 'Exception:', e)
-      init()
+      print('\033[91m {}\033[00m'.format(index), 'Exception:', e)
+      pass
 
   print('--- Fetching complete. Retrieved', count, 'elements.\n')
   s.close()
@@ -84,7 +94,7 @@ def init():
       print('\n--- Fetching ' + str(len(list)) + ' entries from ' + folder + '.')
       fetch(list, folder, True)
     except Exception as e:
-      print(e)
+      print('\033[91m {}\033[00m'.format(e))
       exit(0)
 
 os.system('cls' if os.name == 'nt' else 'clear')

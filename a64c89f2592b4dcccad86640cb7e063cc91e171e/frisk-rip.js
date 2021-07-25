@@ -18,9 +18,6 @@ function ripper() {
   if (!(window.location.origin.indexOf('frisk.chat') > -1)) {
     console.error('-- Wrong website --');
   }
-  else if (window.location.pathname.indexOf('/feed') > -1) {
-    console.error('-- Wrong page --');
-  }
   else {
     var user = window.location.pathname.replace('/', '');
     var list = [];
@@ -64,7 +61,7 @@ function ripper() {
         });
       }
     });
-    console.log('-- URLs list fetched (' + (array.length - 2) + '). --');
+    console.log('-- URLs list fetched (' + array.length + '). --');
 
     //save to json
     try {
