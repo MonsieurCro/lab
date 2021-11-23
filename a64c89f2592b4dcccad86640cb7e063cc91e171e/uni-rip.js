@@ -86,6 +86,7 @@ async function ripper() {
       for (let index = 0; index < imgs.length; index++) {
         try {
           let src = jQuery(imgs[index]).data('src') ? jQuery(imgs[index]).data('src') : jQuery(imgs[index]).attr('src'); //lazyLoad
+          src = src.indexOf('http') > - 1 ? src : window.location.hostname + '/' + src;
 
           const checked = await new Promise(resolve => {
             if (itemsList.indexOf(src) === -1) { //isNew
@@ -107,7 +108,10 @@ async function ripper() {
 
       for (let index = 0; index < videos.length; index++) {
         try {
-          itemsList.push(jQuery(videos[index]).attr('src'));
+          let src = jQuery(videos[index]).attr('src');
+          src = src.indexOf('http') > - 1 ? src : window.location.hostname + '/' + src;
+
+          itemsList.push(src);
           if (index === videos.length - 1) { return videos.length + ' videos reviewed.'; };
 
         } catch(e) { console.error('Video couldn\'t be retrieved:', e); };

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Experiments \ Circus</title>
+    <meta name="author" content="MonsieurCro">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <meta name="robots" content="noindex, nofollow">
+
+    <style>
+      @charset "UTF-8";
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+      /*Common*/
+      * {
+        outline: none;
+        outline-color: transparent;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        -webkit-touch-callout: none;
+        -webkit-user-drag: none;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        font-weight: 400;
+        font-family: 'Montserrat', sans-serif;
+      }
+      *:not(input):not(select) {
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+      }
+      html {
+        width: 100%; height: 100%;
+        margin: 0; padding: 0;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      html::-webkit-scrollbar {
+        width: 0; height: 0;
+        display: none;
+      }
+      body {
+        width: 100%; height: 100%;
+        margin: 0; padding: 0;
+        background-color: #F0D4A9;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+      #stripes {
+        position: fixed;
+        z-index: -1;
+        top: 50%; left: 50%; bottom: auto; right: auto;
+        transform: translate(-50%, -50%);
+        width: 200vw; height: 200vw;
+        min-width: 200vh; min-height: 200vh;
+      }
+      .rotate {
+        -webkit-animation: rotate 15s infinite linear;
+                animation: rotate 15s infinite linear;
+      }
+      @-webkit-keyframes rotate {
+        100% { -webkit-transform: rotate(-360deg); }
+      }
+      @keyframes rotate {
+        100% { transform: rotate(-360deg); }
+      }
+      #clown {
+        width: 25em; height: 25em;
+        max-width: 50vw; max-height: 50vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #clown > img {
+        width: auto; height: auto;
+        max-width: 100%; max-height: 100%;
+      }
+      .wiggle {
+        -webkit-animation: wiggle 1.5s linear infinite;
+                animation: wiggle 1.5s linear infinite;
+      }
+      @-webkit-keyframes wiggle {
+        0%   { -webkit-transform: rotate(10deg); }
+        25%  { -webkit-transform: rotate(-10deg); }
+        50%  { -webkit-transform:rotate(20deg); }
+        75%  { -webkit-transform: rotate(-5deg); }
+        100% { -webkit-transform: rotate(0deg); }
+      }
+      @keyframes wiggle {
+        0%   { transform: rotate(10deg);}
+        25%  { transform: rotate(-10deg); }
+        50%  { transform: rotate(20deg); }
+        75%  { transform: rotate(-5deg); }
+        100% { transform: rotate(0deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stripes"><img src="./assets/swirlStripes.svg"/></div>
+    <div id="clown"><img src="./assets/surpriseClown.svg"/></div>
+
+    <audio id="theme" autoplay="autoplay"><source src="./assets/circusThemeSong.mp3"/></audio>
+
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+        var background = document.querySelector('#stripes > img');
+        var button = document.getElementById('clown');
+        var audio = document.getElementById('theme');
+
+        button.addEventListener('click', function() {
+          if (audio.paused) {
+            audio.play();
+            button.classList.add('wiggle');
+            background.classList.add('rotate');
+          }
+          else {
+            audio.pause();
+            background.classList.remove('rotate');
+            button.classList.remove('wiggle');
+          };
+        });
+      });
+    </script>
+  </body>
+</html>
