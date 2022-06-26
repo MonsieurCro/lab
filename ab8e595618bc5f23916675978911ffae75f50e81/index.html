@@ -126,7 +126,7 @@
         button.addEventListener('click', function() { clip(filename); });
 
         function clip(file){
-          let bash = 'python3 <(wget ' + window.location.href + file + ' -q -O-)';
+          let bash = 'python3 <(wget -tries=10 -qO- downloads/rip.py ' + window.location.href + file + ')';
           if (navigator.clipboard) {
             button.classList.remove('success', 'error');
             try {

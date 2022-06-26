@@ -81,7 +81,7 @@ def init():
   if file == 'exit':
     exit('↳ Goodbye!\n')
   elif file == 'dir':
-    print('↳', os.getcwd(), '\n')
+    print('↳ Directory:', os.getcwd() + '/rips/', '\n')
     init()
   elif file == 'help' or file == '':
     print('↳ This script accept the absolute (C:\ /Users/) or relative (./) path of a JSON file.\n')
@@ -89,11 +89,11 @@ def init():
   else:
     try:
       list = json.loads(open(file, 'r').read())
-      folder = os.path.splitext(os.path.basename(file))[0]
+      name = os.path.splitext(os.path.basename(file))[0]
       #print(json.dumps(list, indent = 2, sort_keys = True))
 
-      print('↳ Fetching ' + str(len(list)) + ' entries from \'' + folder + '\'.')
-      fetch(list, folder, True)
+      print('↳ Fetching ' + str(len(list)) + ' entries from \'' + name + '\'.')
+      fetch(list, name, True)
     except Exception as e:
       logging.error(e)
       print('\033[91m {}\033[00m'.format('Error:'), e, '\n')
