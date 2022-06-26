@@ -2,14 +2,15 @@
 # #!/usr/bin/env python3
 
 try:
+  import logging
   import json
   import os
   import requests
   from tqdm import tqdm
   import shutil
 except ImportError as e:
-  print(e)
-  print('\033[91m {}\033[00m'.format('Run \'pip3 install --upgrade --user -r ./req/modules.txt\' and try again.\n'))
+  logging.error(e)
+  print('\033[91m {}\033[00m'.format('Error:'), 'Run \'pip3 install --upgrade --user -r ./req/modules.txt\' and try again.\n')
   exit(0)
 
 def fetch(urls, directory, logs):
@@ -18,7 +19,7 @@ def fetch(urls, directory, logs):
 
   s = requests.Session()
   request = {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36',
     'accept': 'application/json, text/plain, */*',
     'Referer': '',
     'Cookie' : ''
@@ -29,13 +30,13 @@ def fetch(urls, directory, logs):
     index = '[' + str(idx + 1) + ']'
     filename = str(url.split('/')[-1].split('?')[0])
     shortname = filename if len(filename) <= 12 else filename[:11] + '…'
+    url = url if url.find('http://') > -1 or url.find('https://') > -1 else 'https://' + url
 
     try:
       r = s.get(url, headers = request, stream = True, allow_redirects = True)
 
       if int(r.status_code) == 200:
         r.raw.decode_content = True
-
         root, ext = os.path.splitext(filename)
         type = '.' + r.headers.get('content-type', '').split('/')[-1] if not ext and r.headers.get('content-type', '') else ''
         path = './rips/' + directory + '/' + str(len(urls) - idx) + '_' + filename[:245] + type
@@ -58,32 +59,32 @@ def fetch(urls, directory, logs):
           temp = open(path, 'wb')
 
         shutil.copyfileobj(r.raw, temp)
-        #print(index, shortname, 'successfully downloaded.')
+        #print(index, 'Successfully downloaded.')
         count += 1
 
       else:
-        print('\033[91m {}\033[00m'.format(index), shortname, 'couldn\'t be retrieved (Error ' + str(r.status_code) + ').')
+        print('\033[91m {}\033[00m'.format(index, 'Error:'), r.status_code)
 
     except KeyboardInterrupt:
-      print('--- Script stopped. ---')
+      print('↳ Task cancelled by user. Retrieved ' + str(count) + ' elements out of ' + str(len(urls)) + '.\n')
       init()
     except Exception as e:
-      print('\033[91m {}\033[00m'.format(index), 'Exception:', e)
+      print('\033[91m {}\033[00m'.format(index, 'Exception:'), e)
       pass
 
-  print('--- Fetching complete. Retrieved', count, 'elements.\n')
+  print('↳ Fetching complete. Retrieved ' + str(count) + ' elements out of ' + str(len(urls)) + '.\n')
   s.close()
   init()
 
 def init():
-  file = input('\033[95m {}\033[00m'.format('Please enter path or \'help/folder/exit\': ')).replace(' ', '')
+  file = input('\033[95m {}\033[00m'.format('Please enter the file path or \'help/dir/exit\':\t')).replace(' ', '')
   if file == 'exit':
-    exit('--- Goodbye! ---')
-  elif file == 'folder':
-    print('Folder:', os.getcwd())
+    exit('↳ Goodbye!\n')
+  elif file == 'dir':
+    print('↳', os.getcwd(), '\n')
     init()
   elif file == 'help' or file == '':
-    print('--- This script accept the absolute (C:\ /Users/) or relative (./) path of a JSON file. ---')
+    print('↳ This script accept the absolute (C:\ /Users/) or relative (./) path of a JSON file.\n')
     init()
   else:
     try:
@@ -91,11 +92,14 @@ def init():
       folder = os.path.splitext(os.path.basename(file))[0]
       #print(json.dumps(list, indent = 2, sort_keys = True))
 
-      print('\n--- Fetching ' + str(len(list)) + ' entries from ' + folder + '.')
+      print('↳ Fetching ' + str(len(list)) + ' entries from \'' + folder + '\'.')
       fetch(list, folder, True)
     except Exception as e:
-      print('\033[91m {}\033[00m'.format(e))
-      exit(0)
+      logging.error(e)
+      print('\033[91m {}\033[00m'.format('Error:'), e, '\n')
+      pass
+      init()
+      #exit(0)
 
 os.system('cls' if os.name == 'nt' else 'clear')
 init()
